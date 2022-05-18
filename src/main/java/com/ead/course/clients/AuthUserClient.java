@@ -1,6 +1,6 @@
 package com.ead.course.clients;
 
-import com.ead.course.dtos.CourseDto;
+import com.ead.course.dtos.CourseUserDto;
 import com.ead.course.dtos.ResponsePageDto;
 import com.ead.course.dtos.UserDto;
 import com.ead.course.services.UtilsService;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Log4j2
 @Component
-public class CourseClient {
+public class AuthUserClient {
 
     @Autowired
     RestTemplate restTemplate;
@@ -55,5 +55,18 @@ public class CourseClient {
         return new PageImpl<>(searchResult);
     }
 
+    public ResponseEntity<UserDto> getOneUserById(UUID id){
+        String url = REQUEST_URI_AUTHUSER + "/users/" + id;
+        return restTemplate.exchange(url, HttpMethod.GET, null, UserDto.class);
+    }
 
+
+    public void postSubscriptionUserInCourse(UUID courseId, UUID userId) {
+        String url = REQUEST_URI_AUTHUSER + "/users/"+ userId + "/courses/subscription";
+        CourseUserDto courseUserDto = new CourseUserDto();
+        courseUserDto.setCourseId(courseId);
+        courseUserDto.setUserId(userId);
+        restTemplate.postForObject(url, courseUserDto, String.class);
+
+    }
 }
