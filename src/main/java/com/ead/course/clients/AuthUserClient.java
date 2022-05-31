@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -69,4 +70,11 @@ public class AuthUserClient {
         restTemplate.postForObject(url, courseUserDto, String.class);
 
     }
+
+    public void deleteCourseInAuthUser(UUID courseId) {
+        String url = REQUEST_URI_AUTHUSER + "/users/courses/"+courseId;
+        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+
+    }
+
 }
